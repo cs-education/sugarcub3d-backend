@@ -17,6 +17,15 @@ router.get('/problems', function(req, res, next){
 	});
 });
 
+/* get request for list of all problems */
+router.get('/problems/:id', function(req, res, next){
+	Problem.findById(req.params.id, function(err, problem){
+		if(err){return next(err);}
+
+		res.json(problem);
+	});
+});
+
 /* post request to create new problem
 	provide the following parameters in each request:
 	question	- string
@@ -53,8 +62,8 @@ router.put('/problems/:id', function(req, res, next){
 });
 
 /* delete a problem by id */
-router.delete('/problems', function(req, res, next){
-	Problem.findByIdAndRemove(req.body.id, function(err, problem){
+router.delete('/problems/:id', function(req, res, next){
+	Problem.findByIdAndRemove(req.params.id, function(err, problem){
 		if(err){return next(err);}
 
 		res.json(problem);
