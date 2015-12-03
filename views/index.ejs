@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title>Sugar Cub3d</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+		<script src="/javascripts/angularApp.js"></script>
+	</head>
+	<body ng-app="3dFoodPrinter" ng-controller="MainCtrl">
+		<div>
+			{{question}}
+		</div>
+		<div ng-repeat="choice in choices">
+			{{$index+1}}. {{choice}}
+		</div>
+	</body>
+</html>
