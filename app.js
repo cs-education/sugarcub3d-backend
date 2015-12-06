@@ -6,10 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // connect mongodb
+var mongo_cred = require('./config/mongolab_credential.json');
 var mongoose = require('mongoose');
 require('./models/Problems');
 // named the database turkey cause thanksgiving
-mongoose.connect('mongodb://localhost/turkey');
+mongoose.connect('mongodb://' + mongo_cred.username + ':' + mongo_cred.password + '@ds033760.mongolab.com:33760/sugarcub3d');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
