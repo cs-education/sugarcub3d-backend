@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SugarCub3d</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Archivo+Narrow:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='icon/favicon.ico') }}"/>
+    <script src="{{ url_for('static', filename='js/chardinjs.min.js') }}"></script>
+</head>
+<body style="background-image: url('http://splashnology.com/uploads/images/00/05/63/2011/03/03/7ded01.jpg');
+        background-repeat:repeat;        ">
+<!-----------------------------------NAVIGATION BAR------------------------------------------------>
+<nav class="navbar navbar-inverse " id="navigationBar">
+    <div class="container-fluid">
+        <a href="home" class="pull-left"><img src="{{ url_for('static', filename='logo/white.png') }}"
+                                              style="length: 50px; width: 50px; margin: 5px"></a>
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {#            <a class="navbar-brand" href="#">ZenVisage ScatterPlot Similarity Search</a>#}
+
+            <a class="navbar-brand" href="home"> <a href="home" class="pull-left"><img
+                    src="https://wiki.cites.illinois.edu/wiki/download/attachments/565347446/Long%20title%20white.png?version=1&modificationDate=1449448412000&api=v2"
+                    style="length: 300px; width: 200px; margin: 5px"></a>
+            </a>
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" id="help" data-intro="Click anywhere to exit Help" data-position="left">
+                    <span class="glyphicon glyphicon-question-sign"></span> Help </a></li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="col-md-12 text-center">
+    <div id="page-text">
+        <h1>Well, Hello {{ name }}!</h1>
+
+        <h3> Look, a cookie - designed just for you. <br></h3>
+
+        <p>Go ahead! Click on it :) </p>
+        <br>
+    </div>
+
+    <a href="#" id="cookie-link">
+
+
+        <img id="cookie-image"
+             src="https://wiki.cites.illinois.edu/wiki/download/attachments/565347446/Cookie%20Full%20Letters.png?version=1&modificationDate=1449448401000&api=v2"
+             style="width: 400px; height: auto">
+    </a>
+    <br>
+    <a id="play-game" href="questions" class="btn btn-primary" id="button-stuck" type="button" style="margin: 2%; display: none" >Play Game!</a>
+    <script>
+        $('#cookie-link').on("click", function () {
+            var messedUpCookie = "https://wiki.cites.illinois.edu/wiki/download/attachments/565347446/Cookie%203%20Strokes%20Gone.png?version=1&modificationDate=1449448398000&api=v2";
+            document.getElementById("cookie-image").setAttribute('src',messedUpCookie);
+            var html_to_change = "<h1 style='color:red'>Oh no!</h1> <h3>The characters on the cookie are all messed up!</h3> <br> <p>To fix it, you'll need to answer a few easy questions. <br> Ready?</p>";
+            $('#page-text').html(html_to_change);
+            $('#play-game').fadeIn("4000");
+        })
+    </script>
+</div>
+
+</body>
+</html>

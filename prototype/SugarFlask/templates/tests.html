@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QUnit Tests</title>
+    <link rel="stylesheet" href="//code.jquery.com/qunit/qunit-1.20.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
+
+<!--------------------------------------------------------------------------------------------->
+<!--------------------------------- TEST OUTPUT LIES BELOW ------------------------------------>
+<!--------------------------------------------------------------------------------------------->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sweetalert.css') }}">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Archivo+Narrow:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="shortcut icon" href="{{ url_for('static', filename='icon/favicon.ico') }}"/>
+<script src="{{ url_for('static', filename='js/questionsScript.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sweetalert.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/tests.js') }}"></script>
+<script src="{{ url_for('static', filename='js/questionsScript.js') }}"></script>
+
+
+<div class="row" style="  height: 100% ;width: 100%; margin:0%;">
+
+    <!------------------------------------------LEFT SECTION------------------------------>
+
+    <div class="col-md-5" style=" height: 100% ; " id="leftSection">
+
+        <div class="col-md-12 text-center" style="margin: 0px">
+
+
+            <img id="cookie-image"
+                 src="https://wiki.cites.illinois.edu/wiki/download/attachments/565347446/Cookie%20Full%20Letters.png?version=1&modificationDate=1449448401000&api=v2"
+                 style="width: 80%; margin:10%; border:2px solid #021a40; padding:5%;text-align: center"
+
+            >
+
+            <div class="progress" style="border: 2px black dashed">
+                <div id="progress-bar-question" class="progress-bar progress-bar-info progress-bar-striped active"
+                     role="progressbar"
+                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                    0%
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!------------------------------------------MAIN SECTION------------------------------>
+
+    <div class="col-md-6" style=" background-color:white;height: 100%; border: 2px solid black; margin: 3%; padding: 5%"
+         id=" rightSection">
+
+        <h1>Question <span id="questionNumber"> 1</span></h1>
+
+        <div id="questionText">
+            <p>
+                int x = 4
+                <br>x = x + 10
+                <br>What is the value of x?
+            </p>
+        </div>
+
+
+        <form id=question-options>
+            <div class="radio">
+                <label><input type="radio" id="option1" name="optionsButton"><span id="option1-text">1</span></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" id="option2" name="optionsButton"><span id="option2-text">1</span></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" id="option3" name="optionsButton"><span id="option3-text">1</span></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" id="option4" name="optionsButton"><span id="option4-text">1</span></label>
+            </div>
+            <button class="btn btn-info" id="button-stuck" type="button">I'm Stuck!</button>
+            <button class="btn btn-primary" id="button-submit" type="button">Submit!</button>
+
+        </form>
+
+        <script>
+            $('#button-submit').click(function (event) {
+                evaluateAnswer();
+            });
+            $('#button-stuck').click(function (event) {
+                getHint();
+            });
+        </script>
+
+    </div>
+
+</div>
+</body>
+</html>
