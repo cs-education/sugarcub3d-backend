@@ -22,9 +22,7 @@ router.use(function (req, res, next) {
 // root of API
 router.route('/').get(function (req, res) {
 	// notify user on how to access API
-	res.status(200).json({
-		message: 'Welcome to the SugarCub3d API. Go to /questions or /users to use the API.'
-	});
+	res.status(200).send('Welcome to the SugarCub3d API. Go to /questions or /users to use the API.');
 });
 
 // Questions route
@@ -32,7 +30,7 @@ var questionsRoute = router.route('/questions');
 
 /*
 GET - Respond with a list of questions
-Params:
+
 */
 questionsRoute.get(function (req, res) {
 	// initialize Mongo query
@@ -51,9 +49,50 @@ questionsRoute.get(function (req, res) {
 	}
 	if (reqQuery.select) {
 		var select = JSON.parse(reqQuery.select);
-		findQuery.select()
+		findQuery.select(select);
+	}
+	if (reqQuery.skip) {
+		var skip = parseInt(reqQuery.skip, 10);
+		findQuery.skip(skip);
+	}
+	if (reqQuery.limit) {
+		var limit = parseInt(reqQuery.limit, 10);
+		findQuery.limit(limit);
 	}
 
-})
+	// execute query
+	findQuery.exec(function (err, questions) {
+		if (err) {
+			console.error(err.stack);
+			res.status(500).json({ message: 'HTTP 500 - Internal Server Error. A team of CS majors are on the case!'});
+		}
+		else {
+			// Success
+			res.status(200).json({message: 'OK', data: questions});
+		}
+	});
+});
+
+/*
+POST - Create or update an existing question
+*/
+questionsRoute.post(function (req, res) {
+	// find question in database before creationg
+	/*if (req.params.questionText) {
+		Question.findOne({'questionText' : req.params.questionText}, function (err, question) {
+
+			if (err) {
+				console.error(err.stack);
+			}
+			else { // question already exists
+
+			}
+		})
+	} */
+});
+
+module.exports = router;
+
+
 
 
