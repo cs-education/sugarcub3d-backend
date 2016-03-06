@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var random = require('mongoose-simple-random');
 var Schema = mongoose.Schema;
 
 // Schema for question object
@@ -17,5 +18,6 @@ var questionSchema = new Schema({
 	explanationText : {type: String, required: true},
 	dateCreated: {type: Date, default: Date.now}
 });
+questionSchema.plugin(random);
 
 module.exports = mongoose.model('Question', questionSchema);

@@ -29,44 +29,63 @@ var questionsRoute = router.route('/');
 GET - Respond with a list of questions
 */
 questionsRoute.get(function (req, res) {
-	// initialize Mongo query
-	var findQuery = Question.find();
- 
 	// get query params and build query
-	var reqQuery = req.query;
-  
-	if (reqQuery.where) {
- 		var where = JSON.parse(reqQuery.where)
-		findQuery.where(where)
+	var queryParams = req.query;
+  	var where, sort, select, skip, limit;
+
+	if (queryParams.where) {
+ 		where = JSON.parse(queryParams.where)
 	}
-	if (reqQuery.sort) {
-		var sort = JSON.parse(reqQuery.sort);
-		findQuery.sort(sort);
+	if (queryParams.sort) {
+		sort = JSON.parse(queryParams.sort);
 	}
-	if (reqQuery.select) {
-		var select = JSON.parse(reqQuery.select);
-		findQuery.select(select);
+	if (queryParams.select) {
+		select = JSON.parse(queryParams.select);
 	}
-	if (reqQuery.skip) {
-		var skip = parseInt(reqQuery.skip, 10);
-		findQuery.skip(skip);
+	if (queryParams.skip) {
+		skip = parseInt(queryParams.skip, 10);
 	}
-	if (reqQuery.limit) {
-		var limit = parseInt(reqQuery.limit, 10);
-		findQuery.limit(limit);
+	if (queryParams.limit) {
+		limit = parseInt(queryParams.limit, 10);
 	}
 
-	// execute query
-	findQuery.exec(function (err, questions) {
-		if (err) {
-			console.error(err.stack);
-			res.status(500).json({ message: 'HTTP 500 - Internal Server Error.'});
-		}
-		else {
-			// Success
-			res.status(200).json({message: 'OK', data: questions});
-		}
-	});
+	// check if random order is requested
+	if (!queryParams.random || queryParams.random === 'false') {
+		var findQuery = Question.find();
+		findQuery.where = where;
+		findQuery.sort = sort;
+		findQuery.select = select;
+		findQuery.skip = skip;
+		findQuery.limit = limit;
+		// execute query
+		findQuery.exec(function (err, questions) {
+			if (err) {
+				console.error(err.stack);
+				res.status(500).json({ message: 'HTTP 500 - Internal Server Error.'});
+			}
+			else {
+				// Success
+				res.status(200).json({message: 'OK', data: questions});
+			}
+		});	
+	}
+	else {	// random order requested
+		var options = {skip: skip, limit: limit};
+		Question.findRandom(where, select, options, function (err, questions) {
+			if (err) {
+				console.error(err.stack);
+				res.status(500).json({message: 'HTTP 500 - Internal Server Error.'});
+			}
+			else {
+				// check if results are null
+				if (!questions)
+					res.status(200).json({message: 'No questions matching query.', data: questions});
+				else
+					res.status(200).json({message: 'HTTP 200 - OK', data: questions});
+			}
+		});
+	}
+	
 });
 
 /*
@@ -84,16 +103,23 @@ questionsRoute.post(function (req, res) {
 
 				if (!question) {	// question doesn't exist, so create new one	
 					
-					// check if required params are provided
-					if (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D) {
+					// MC question, check if params are provided
+					if (req.body.questionType === 'MC' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D)) {
 
-						// req params not provided
+						// send error
+						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
+						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
+					}
+					// IDE question, check if params are provided
+					else if (req.body.questionType === 'IDE' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText)) {
+						
+						// send error
 						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
 						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
 					}
 					else {	// all required parameters provided
+						// create new question object
 						var newQues = new Question();
-
 						newQues.questionType = req.body.questionType;
 						newQues.questionText = req.body.questionText;
 						newQues.hintText = req.body.hintText;
@@ -117,14 +143,22 @@ questionsRoute.post(function (req, res) {
 				}
 				else {	// question exists, update its values
 
-					// check if required params are provided
-					if (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D) {
+					// MC question, check if params are provided
+					if (req.body.questionType === 'MC' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D)) {
 
-						// req params not provided
+						// send error
+						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
+						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
+					}
+					// IDE question, check if params are provided
+					else if (req.body.questionType === 'IDE' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText)) {
+						
+						// send error
 						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
 						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
 					}
 					else {	// params provided, update question
+
 						question.questionType = req.body.questionType;
 						question.questionText = req.body.questionText;
 						question.hintText = req.body.hintText;
@@ -219,14 +253,23 @@ questionsIdRoute.put(function (req, res) {
 
 				else {	// question exists, update its values
 
-					// check if required params are provided
-					if (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D) {
+					// MC question, check if params are provided
+					if (req.body.questionType === 'MC' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText || !req.body.optionsText || !req.body.explanationText || !req.body.optionsText.A || !req.body.optionsText.B || !req.body.optionsText.C || !req.body.optionsText.D)) {
 
-						// req params not provided
+						// send error
 						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
 						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
 					}
-					else {	// params provided, update question
+					// IDE question, check if params are provided
+					else if (req.body.questionType === 'IDE' && (!req.body.questionType || !req.body.questionText || !req.body.hintText || !req.body.correctAnswerText)) {
+						
+						// send error
+						res.status(400).json({message: 'HTTP 400 - Bad Request. All required parameters for object creation not provided.'});
+						console.error('HTTP 400 - Bad Request. All required parameters for object creation not provided.');
+					}
+					else {	
+
+						// params provided, update question
 						question.questionType = req.body.questionType;
 						question.questionText = req.body.questionText;
 						question.hintText = req.body.hintText;
