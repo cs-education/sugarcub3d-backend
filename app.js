@@ -28,6 +28,7 @@ mongoose.connect('mongodb://' + mongo_user + ':' + mongo_password + '@ds039504.m
 
 // route modules
 var questionRouter = require('./routes/question');
+var userRouter = require('./routes/user');
 
 // express instance
 var app = express();
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // define base URL for routes
 app.use('/api/questions', questionRouter);
+app.use('/api/users', userRouter);
 
 // export express instance
 module.exports = app;

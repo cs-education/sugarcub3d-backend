@@ -17,6 +17,7 @@ router.use(function (req, res, next) {
 	console.log('Time of request : ', Date.now());
 	requestCount++;
 	console.log('Request count : ', requestCount);
+	console.log('Request at /questions');
 	next();
 });
 
