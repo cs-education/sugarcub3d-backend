@@ -15,7 +15,7 @@ var questionSchema = new Schema({
 		D : {type: String, default: ''}
 	},
 	explanationText : {type: String, required: true},
-	dateCreated: {type: Date, required: true, default: Date.now}
+	dateCreated: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Question', questionSchema);
