@@ -30,12 +30,12 @@ GET - Respond with a list of questions
 questionsRoute.get(function (req, res) {
 	// initialize Mongo query
 	var findQuery = Question.find();
-
+ 
 	// get query params and build query
 	var reqQuery = req.query;
-
+  
 	if (reqQuery.where) {
-		var where = JSON.parse(reqQuery.where)
+ 		var where = JSON.parse(reqQuery.where)
 		findQuery.where(where)
 	}
 	if (reqQuery.sort) {

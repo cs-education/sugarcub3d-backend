@@ -23,11 +23,11 @@ mongoose.connect('mongodb://' + mongo_cred.dbuser + ':' + mongo_cred.dbpassword 
 });
 
 // route modules
-var apiRouter = require('./routes/api');
+var questionRouter = require('./routes/question');
 
 // express instance
 var app = express();
-
+ 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -38,7 +38,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 // define base URL for routes
-app.use('/api', apiRouter);
+app.use('/api/questions', questionRouter);
 
 // export express instance
 module.exports = app;
