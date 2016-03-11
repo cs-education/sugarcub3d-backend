@@ -47,13 +47,15 @@ app.use(function (req, res, next) {
 });
 
 
-// routes (exported by individual modules)
+// routes (exported by modules)
 var questionRouter = require('./routes/question');
 var userRouter = require('./routes/user');
+var questionRecordRouter = require('./routes/questionRecord');
 
 // define base URL for routes
 app.use('/api/questions', questionRouter);
 app.use('/api/users', userRouter);
+app.use('/api/questionRecords', questionRecordRouter);
 
 // export express instance
 module.exports = app;

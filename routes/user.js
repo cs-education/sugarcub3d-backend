@@ -9,8 +9,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
+// mongoose model
 var User = require('../models/users');
-
 
 // middleware. code is executed for every request to this router
 var requestCount = 0;
