@@ -26,9 +26,6 @@ mongoose.connect('mongodb://' + mongo_user + ':' + mongo_password + '@ds039504.m
   }
 });
 
-// route modules
-var questionRouter = require('./routes/question');
-var userRouter = require('./routes/user');
 
 // express instance
 var app = express();
@@ -49,6 +46,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+// routes (exported by individual modules)
+var questionRouter = require('./routes/question');
+var userRouter = require('./routes/user');
 
 // define base URL for routes
 app.use('/api/questions', questionRouter);
